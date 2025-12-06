@@ -1,7 +1,3 @@
-//---------Updated--------------
-
-
-
 // import the express library 
 const express=require("express");
 //require("express") loads the Express module from node_modules and returns a function.
@@ -25,6 +21,11 @@ const mongoose=require("mongoose");
 //get from another folder---------------------------------------------------------------------------------
 const Listing=require("./models/listing.js");// here . bcz models and app.js are in same floder
 //---------------------------------------------------------------------------------------------------------
+
+const path=require("path");
+
+app.set("view engine","ejs");
+app.set("views",path.join(__dirname,"views"));
 
 const MONGO_URL=('mongodb://127.0.0.1:27017/wanderlust');
 async function main() {
@@ -63,21 +64,39 @@ app.listen(8080,()=>{
     console.log("Server is listening to port 8080");//console.log is just a confirmation message for me in the terminal
 });
 
+// app.get("/testListing",async (req,res)=>{
+    
+//    let samplelisting=new Listing({
+//    title:"My New Villa",
+//    description:"Very Large Area",
+//    price:1500,
+//    location:"Siwan,Bihar",
+//    country:"India",
+//    });
 
-app.get("/testListing",async (req,res)=>{
-   let samplelisting=new Listing({
-   title:"My New Villa",
-   description:"Very Large Area",
-   price:1500,
-   location:"Siwan,Bihar",
-   country:"India",
-   });
+//    await samplelisting.save();//first save the list then do any operation
+//    console.log("Sample save");//You (the developer) see “Sample save” in the terminal.
+//    res.send("Successfull testing");//The client that hit /testListing gets “Successfull testing” as the HTTP response.
 
-   await samplelisting.save();//first save the list then do any operation
-   console.log("Sample save");//You (the developer) see “Sample save” in the terminal.
-   res.send("Successfull testing");//The client that hit /testListing gets “Successfull testing” as the HTTP response.
+//    //-----------confusion-----------------------------------------------------------------------------------
+//    //if not getting default image link on command prompt, run http://localhost:8080/testlisting again to refresh and then run command prompt
+//    //--------------------------------------------------------------------------------------------------------
+// });
 
-   //-----------confusion-----------------------------------------------------------------------------------
-   //if not getting default image link on command prompt, run http://localhost:8080/testlisting again to refresh and then run command prompt
-   //--------------------------------------------------------------------------------------------------------
+//index route--> to get all data -----------------------------------------------------------------------------------------------------------------------------
+//Airbnb nodemon app.js --> run server suing this on terminal
+//run localhost:8080/listings on chrome
+// app.get("/listings",(req,res)=>{
+//    Listing.find({})
+//    .then((res)=>{
+//     console.log(res);
+//    });
+// });
+
+app.get("/listings",async (req,res)=>{
+    const allListings=await Listing.find({});
+    res.render("listings/index.ejs",{allListings});
 });
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+

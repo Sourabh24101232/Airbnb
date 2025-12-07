@@ -24,9 +24,14 @@ const Listing=require("./models/listing.js");// here . bcz models and app.js are
 
 const path=require("path");
 
-app.set("view engine","ejs");
-app.set("views",path.join(__dirname,"views"));
+app.set("view engine","ejs");//Tells Express that the default template engine is EJS.​
+app.set("views",path.join(__dirname,"views"));//Tell Express where my EJS files live.
+app.use(express.urlencoded({extended:true}));
+//When a normal HTML form is submitted to your server, the data arrives as a raw string.
+//above line automatically converts that raw string into a JavaScript object and puts it in req.body, so you can do req.body.title, req.body.price, etc
 
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//This code connects your app to the local wanderlust MongoDB database using mongoose.connect
 const MONGO_URL=('mongodb://127.0.0.1:27017/wanderlust');
 async function main() {
     await mongoose.connect(MONGO_URL);
@@ -44,6 +49,7 @@ main()
 //That promise:
 //fulfills when DB connects successfully 
 //rejects if connection throws an error.
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //-------------Error-----------------------------------------------------------------------
 //Order and function calls matter more than “copying same code as tutor”
@@ -100,3 +106,33 @@ app.get("/listings",async (req,res)=>{
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+//---------------------------------------(CREATE) , these must be placed above READ-------------------------------------------------------------------------------------------------------
+
+//NEW Route (using GET) to get a form to create new iasting
+app.get("/listings/new", async (req,res)=>{
+    res.render("listings/new.ejs");
+});
+
+//CREATE route (Using POST) to create listing after submitting form of NEW route
+app.post("/listings", async (req, res) => {
+    // let {title,desc,image,price,location,country}=req.body;
+    const newlist = new Listing(req.body.listing);
+    await newlist.save();
+    // console.log(newlist);
+    res.redirect("/listings");
+});
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+//---------------------------------------(Read,GET request)----------------------------------------------------------------------------------------------------------
+//Show Route
+app.get("/listings/:id",async (req,res)=>{
+    let {id}=req.params;//find id
+    const listing=await Listing.findById(id);//find and store all data 
+    res.render("listings/show.ejs",{listing});
+});
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+//--------------------------------------(UPDATE)--------------------------------------------------------------------------------------------------------------

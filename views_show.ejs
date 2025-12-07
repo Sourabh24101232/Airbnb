@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WanderLust</title>
+</head>
+<body>
+    <!-- SHOW ROUTE : to READ a particular data using GET request  -->
+     <!-- data is stored in variable listing -->
+
+    <h1>Listing details: </h1>
+    <ul>
+       <li><%= listing.title %></li>
+       <li><%= listing.description %></li>
+       <!-- to add rupee symbol, &#8377;  is used-->
+       <!-- to use comma as per INDIAN system, .toLocaleString("en-IN")  is used -->
+       <li>&#8377; <%= listing.price.toLocaleString("en-IN") %></li>
+       <li><%= listing.location %></li>
+       <li><%= listing.country %></li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WanderLust</title>
+</head>
+<body>
+
+    <h3>Edit Your List</h3>
+    <br><br>
+
+    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT">
+
+          <!-- edit an object listing with keys = title,description,image,price,location,country -->
+          <!-- change placeholder to value of each particular listing -->
+         <!-- matlab pehle dikhata tha "location" ab dikhayega "HotelSK ka location" jisko hum edit kar sakte hai -->
+        <input name="listing[title]" value="<%= listing.title %>" type="text">
+        <br><br>
+        <textarea name="listing[description]"><%= listing.description %></textarea>
+        <br><br>
+        <input name="listing[image]" value="<%= listing.image.url %>" type="text">
+        <br><br>
+        <input name="listing[price]" value="<%= listing.price %>"  type="number">
+        <br><br>
+        <input name="listing[location]" value="<%= listing.location %>"  type="text">
+        <br><br>
+        <input name="listing[country]" value="<%= listing.country %>"  type="text">
+        <br><br>
+
+        <button type="submit">Edit</button>
+    </form>
+</body>
+</html>

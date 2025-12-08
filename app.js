@@ -22,6 +22,11 @@ const mongoose=require("mongoose");
 const Listing=require("./models/listing.js");// here . bcz models and app.js are in same floder
 //---------------------------------------------------------------------------------------------------------
 
+//Method override MUST come before your routes.----------------------------
+const methodOverride=require("method-override");
+app.use(methodOverride("_method"));
+//used to convert POST into put request while updating-----------------------------
+
 const path=require("path");
 
 app.set("view engine","ejs");//Tells Express that the default template engine is EJS.​
@@ -103,6 +108,7 @@ app.get("/listings",async (req,res)=>{
     const allListings=await Listing.find({});
     res.render("listings/index.ejs",{allListings});
 });
+
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -136,3 +142,29 @@ app.get("/listings/:id",async (req,res)=>{
 
 
 //--------------------------------------(UPDATE)--------------------------------------------------------------------------------------------------------------
+//Edit Route (Using GET) to get form to edit/update
+app.get("/listings/:id/edit",async (req,res)=>{
+    let {id}=req.params;//find id
+    const listing=await Listing.findById(id);//find and store all data 
+    res.render("listings/edit.ejs",{listing});
+});
+
+//Update Route (Using PUT) to update after form submission
+app.put("/listings/:id",async (req,res)=>{
+    let {id}=req.params;//find id
+   await Listing.findByIdAndUpdate(id,{...req.body.listing});
+//    res.redirect("/listings");
+   res.redirect(`/listings/${id}`);
+});
+
+//----------------------------------(DELETE)--------------------------------------------------
+//form with button is made inside show.ejs
+
+app.delete("/listings/:id",async(req,res)=>{
+    let {id}=req.params;//find id
+    let deletedList=await Listing.findByIdAndDelete(id);
+    //console.log(deletedList);
+    res.redirect("/listings");
+});
+
+//-----------------------------------------------------------------------------------------------------------------

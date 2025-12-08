@@ -6,18 +6,39 @@
     <title>WanderLust</title>
 </head>
 <body>
-    <!-- SHOW ROUTE : to READ a particular data using GET request  -->
-     <!-- data is stored in variable listing -->
 
-    <h1>Listing details: </h1>
-    <ul>
-       <li><%= listing.title %></li>
-       <li><%= listing.description %></li>
-       <!-- to add rupee symbol, &#8377;  is used-->
-       <!-- to use comma as per INDIAN system, .toLocaleString("en-IN")  is used -->
-       <li>&#8377; <%= listing.price.toLocaleString("en-IN") %></li>
-       <li><%= listing.location %></li>
-       <li><%= listing.country %></li>
-    </ul>
+    <h3>Create a New List</h3>
+    <br><br>
+
+    <form method="POST" action="/listings">
+        <!-- <input name="title" placeholder="Enter your title here" type="text">
+        <br><br>
+        <textarea name="description" placeholder="description" type="text"></textarea>
+        <br><br>
+        <input name="Image" placeholder="Enter image url" type="text">
+        <br><br>
+        <input name="price" placeholder="Enter price" type="number">
+        <br><br>
+        <input name="location" placeholder="location of listing" type="text">
+        <br><br>
+        <input name="country" placeholder="country" type="text">
+        <br><br> -->
+
+          <!-- create an object listing with keys = title,description,image,price,location,country -->
+        <input name="listing[title]" placeholder="Enter your title here" type="text">
+        <br><br>
+        <textarea name="listing[description]" placeholder="description"></textarea>
+        <br><br>
+        <input name="listing[image]" placeholder="Enter image url" type="text">
+        <br><br>
+        <input name="listing[price]" placeholder="Enter price" type="number">
+        <br><br>
+        <input name="listing[location]" placeholder="location of listing" type="text">
+        <br><br>
+        <input name="listing[country]" placeholder="country" type="text">
+        <br><br>
+
+        <button type="submit">Add</button>
+    </form>
 </body>
 </html>

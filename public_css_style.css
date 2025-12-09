@@ -1,0 +1,60 @@
+/* body{
+    background-color: pink;
+} */
+
+/* Navbar */
+.navbar{
+    height:5 rem;
+    background-color: white;
+    /* this bg-color will hide the page moving behind navbar */
+}
+
+.fa-compass{
+    color:#fe424d;
+    font-size: 2rem;
+    /* must not be space b/w 2 and rem */
+}
+
+.nav-link{
+    color: #222222 !important;
+    /* this custom color will remain constant */
+}
+
+/* Social icons section — full-width row with icons centered horizontally and vertically */
+.f-info-socials,.f-info-links,.f-info-brand{
+    width: 100%;
+    display: flex;              /* place icons in a row */
+    align-items: center;        /* center icons vertically */
+    justify-content: center;    /* center icons horizontally */
+}
+
+/* Styling for each social icon (Font Awesome icons) */
+.f-info-socials i {
+    margin-right: 1rem;     /* space between icons */
+    font-size: 1.5rem;      /* icon size */
+}
+
+/* Default footer link styling */
+.f-info-links a {
+    text-decoration: none;  /* remove underline */
+    color: #222222;         /* dark gray text */
+}
+
+/* Hover effect for footer links */
+.f-info-links a:hover {
+    text-decoration: underline;
+}
+
+/* Main footer wrapper */
+.f-info {
+    display: flex;              /* place items in a horizontal row */
+    justify-content: center;    /* center all items horizontally */
+    flex-wrap: wrap;            /* allow items to wrap on smaller screens */
+    text-align: center;         /*  center-align text inside each item */
+    height: 8rem;               /* fixed footer height */
+    background-color: #ebebeb;  /* light gray background */
+}
+
+/* display: flex → children sit in a row
+flex-wrap: wrap → if there isn't enough horizontal space, they drop to the next line
+So each child div becomes one block on each line IF their width is large enough (100% or auto with constraints) */

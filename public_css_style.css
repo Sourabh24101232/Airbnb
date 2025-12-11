@@ -2,60 +2,69 @@
     background-color: pink;
 } */
 
-body{ 
+body {
     /* website ke link mein jo waste hai usko comment kiya hai */
-/* .plus-jakarta-sans-<uniquifier> { */
-  font-family: "Plus Jakarta Sans", sans-serif !important;
-  /* font-optical-sizing: auto;
+    /* .plus-jakarta-sans-<uniquifier> { */
+    font-family: "Plus Jakarta Sans", sans-serif !important;
+    /* font-optical-sizing: auto;
   font-weight: <weight>;
   font-style: normal;
 } */
 
-display: flex;
-flex-direction: column;
-min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-.container{
+.container {
     flex: 1;
 }
 
 /* Navbar */
-.navbar{
-    height:5 rem;
+.navbar {
+    height: 5 rem;
     background-color: white;
     /* this bg-color will hide the page moving behind navbar */
 }
 
-.fa-compass{
-    color:#fe424d;
+.fa-compass {
+    color: #fe424d;
     font-size: 2rem;
     /* must not be space b/w 2 and rem */
 }
 
-.nav-link{
+.nav-link {
     color: #222222 !important;
     /* this custom color will remain constant */
 }
 
 /* Social icons section — full-width row with icons centered horizontally and vertically */
-.f-info-socials,.f-info-links,.f-info-brand{
+.f-info-socials,
+.f-info-links,
+.f-info-brand {
     width: 100%;
-    display: flex;              /* place icons in a row */
-    align-items: center;        /* center icons vertically */
-    justify-content: center;    /* center icons horizontally */
+    display: flex;
+    /* place icons in a row */
+    align-items: center;
+    /* center icons vertically */
+    justify-content: center;
+    /* center icons horizontally */
 }
 
 /* Styling for each social icon (Font Awesome icons) */
 .f-info-socials i {
-    margin-right: 1rem;     /* space between icons */
-    font-size: 1.5rem;      /* icon size */
+    margin-right: 1rem;
+    /* space between icons */
+    font-size: 1.5rem;
+    /* icon size */
 }
 
 /* Default footer link styling */
 .f-info-links a {
-    text-decoration: none;  /* remove underline */
-    color: #222222;         /* dark gray text */
+    text-decoration: none;
+    /* remove underline */
+    color: #222222;
+    /* dark gray text */
 }
 
 /* Hover effect for footer links */
@@ -65,12 +74,18 @@ min-height: 100vh;
 
 /* Main footer wrapper */
 .f-info {
-    display: flex;              /* place items in a horizontal row */
-    justify-content: center;    /* center all items horizontally */
-    flex-wrap: wrap;            /* allow items to wrap on smaller screens */
-    text-align: center;         /*  center-align text inside each item */
-    height: 8rem;               /* fixed footer height */
-    background-color: #ebebeb;  /* light gray background */
+    display: flex;
+    /* place items in a horizontal row */
+    justify-content: center;
+    /* center all items horizontally */
+    flex-wrap: wrap;
+    /* allow items to wrap on smaller screens */
+    text-align: center;
+    /*  center-align text inside each item */
+    height: 8rem;
+    /* fixed footer height */
+    background-color: #ebebeb;
+    /* light gray background */
 }
 
 /* display: flex → children sit in a row
@@ -78,40 +93,63 @@ flex-wrap: wrap → if there isn't enough horizontal space, they drop to the nex
 So each child div becomes one block on each line IF their width is large enough (100% or auto with constraints) */
 
 /* cards css */
-.card{
+.card {
     border: none !important;
     margin-bottom: 2rem;
 }
-.card-img-top{
+
+.card-img-top {
     border-radius: 1rem;
-    width: 100% !important;  /* covers complete width */
-    object-fit:cover !important;
+    width: 100% !important;
+    /* covers complete width */
+    object-fit: cover !important;
 }
-.card-body{
+
+.card-body {
     /* gap b/w img and below text will become 0 */
     padding: 0 !important;
 }
-.card-text p{
+
+.card-text p {
     /* to make the text darker */
     font-weight: 400 !important;
 }
 
-.listing-link{
+.listing-link {
     /* to not show underline on anchor tags like titles or prices of cards */
     text-decoration: none;
 }
 
 /* card effects */
-.card-img-overlay{
+.card-img-overlay {
     opacity: 0;
 }
-.card-img-overlay:hover{
+
+.card-img-overlay:hover {
     opacity: 0.2;
     background-color: white;
 }
 
 /* New Page */
-.add-btn{
+.add-btn {
     background-color: #fe424d !important;
     border: none !important;
+}
+
+/* Edit page */
+.edit-btn {
+    background-color: #fe424d !important;
+    border: none !important;
+}
+
+/* Show Page */
+.show-img{
+    height:30vh;/* 30 % height of viewport */
+}
+.btns{
+    display: flex;
+}
+.show-card{
+    padding-left: 0;
+    padding-right: 0;
 }

@@ -1,22 +1,8 @@
 // import the express library 
 const express = require("express");
-//require("express") loads the Express module from node_modules and returns a function.
-//const express = ... stores that function in the constant express
-
-//express() calls the function you imported above and returns an “app” object
 const app = express();
-//app represents your web server; you use it to define routes (app.get, app.post), add middleware (app.use), and start listening on a port (app.listen)
-//I will tell this "app" how to respond when someone visits certain URLs,
-
-//Imports Mongoose, a library to work with MongoDB.
+//app represents your web server; 
 const mongoose = require("mongoose");
-//This loads a helper library that talks to the database(MongoDB) for me
-//The constant mongoose gives you access to methods like mongoose.connect(...), mongoose.Schema, and mongoose.model to define schemas and interact with the database.
-// “Mongoose is an ODM, i.e., an Object-Document Mapper, which maps my JavaScript objects to MongoDB documents so I can work with the database using objects instead of manual queries.”
-
-//-------------Confusion-------------------------------------------------------
-//Express needs 2 lines because its main export is a function that you must call to create the app object. Mongoose's main export is already the object you need
-//------------------------------------------------------------------------------
 
 //get from another folder---------------------------------------------------------------------------------
 const wrapAsync = require("./utils/wrapasync.js")
@@ -24,8 +10,9 @@ const ExpressError = require("./utils/ExpressError.js");
 const { validateListing, validateReview } = require("./middleware");
 
 //required for express router
-const listings = require("./routes/listing.js");
-const reviews=require("./routes/review.js");
+const listingRouter = require("./routes/listing.js");
+const reviewRouter=require("./routes/review.js");
+const userRouter=require("./routes/user.js");
 
 //to set up login/signup
 const passport=require("passport");
@@ -64,18 +51,7 @@ main()
     .catch((err) => {
         console.log(err);
     });
-
-//Because main is async, calling main() returns a Promise.
-//That promise:
-//fulfills when DB connects successfully 
-//rejects if connection throws an error.
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-//-------------Error-----------------------------------------------------------------------
-//Order and function calls matter more than “copying same code as tutor”
-//main is an async function → must be called to get a promise.
-//const variables live in TDZ(“temporal dead zone”) → cannot be used before declaration
-//------------------------------------------------------------------------------------------
 
 //Defines how your server responds when someone sends a GET request to the root path (/)
 app.get("/", (req, res) => {
@@ -87,12 +63,22 @@ app.get("/", (req, res) => {
 
 //sessions----------------------------------------------------------------------------
 const session = require("express-session");
+const flash = require("connect-flash");
+
 //session middleware
 app.use(session({
     secret: "keyboard cat",
     resave: false,
     saveUninitialized: false
 }));
+
+app.use(flash());//to flash a message when signup gets succeded
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    next();
+});
 //--------------------------------------------------------------------------------------
 
 
@@ -125,11 +111,14 @@ app.listen(8080, () => {
 
 
 //-------------------------------------------------------------------------------------------------------------
-app.use("/listings", listings);
+app.use("/listings", listingRouter);
 //whenever path route starts from /listings, use listings obtained above by importing listing.js from routes
 
-app.use("/listings/:id/reviews", reviews);
+app.use("/listings/:id/reviews", reviewRouter);
 //whenever path route starts from /listings, use listings obtained above by importing listing.js from routes
+
+app.use("/", userRouter);
+//whenever path route starts from /user, use listings obtained above by importing listing.js from routes
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -138,23 +127,9 @@ app.use((req, res, next) => {
     next(new ExpressError(404, "Page Not Found"));
 });
 
-//server side error handling like new listing will not be added if abcd is filled in price box
-// app.use((err,req,res,next)=>{
-//     res.send("Something got wrong");
-//     //custom message gets printed when mongoose try to save data and find error
-// });
-
-// app.use((err,req,res,next)=>{
-//     let {statusCode,message}=err;//extract statusCode and message from error
-//     res.status(statusCode).send(message);
-// });
-
 //if no message in error given by express, default message will be shown 
 app.use((err, req, res, next) => {
     let { statusCode = 500, message = "Something went wrong" } = err;//extract statusCode and message from error
-    // res.status(statusCode).send(message);
-    //res.render("error.ejs",{message});
-    // res.render("error.ejs",{err});
     res.status(statusCode).render("error.ejs", { err });
 });
 

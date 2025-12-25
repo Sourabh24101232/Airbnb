@@ -14,7 +14,11 @@ const reviewSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now(),//by default current time
-    }
+    },
+    author:{
+        type:Schema.Types.ObjectId,
+        ref:"User",
+    },
 });
 
 //export model ="Review" with schema=reviewSchema

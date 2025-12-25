@@ -4,8 +4,8 @@ const router = express.Router();
 //aquire somethings to run all requests------------------------------------------
 const wrapAsync = require("../utils/wrapasync.js")
 const ExpressError = require("../utils/ExpressError.js");
-const { listingSchema} = require("../schema.js");
-const { validateListing, validateReview } = require("../middleware");
+const { listingSchema } = require("../schema.js");
+const { validateListing, validateReview, isLoggedIn, isOwner } = require("../middleware");
 const Listing = require("../models/listing.js");// here . bcz models and app.js are in same floder
 //--------------------------------------------------------------------------------
 
@@ -38,9 +38,9 @@ router.get("/", wrapAsync(async (req, res) => {
 // });
 
 //NEW Route (using GET) to get a form to create new listing
-router.get("/new", wrapAsync(async (req, res) => {
+router.get("/new", isLoggedIn, async (req, res) => {//pass middleware isLoggedIn to check if user is logged in or not
     res.render("listings/new.ejs");
-}));
+});
 
 //CREATE route (Using POST) to create listing after submitting form of NEW route
 // app.post("/listings", async (req, res) => {
@@ -63,7 +63,9 @@ router.get("/new", wrapAsync(async (req, res) => {
 
 router.post("/", validateListing, wrapAsync(async (req, res, next) => {
     const newlist = new Listing(req.body.listing);
+    newlist.owner = req.user._id;//to assign owner name of newlist created=username
     await newlist.save();
+    req.flash("success", "New listing created!");
     res.redirect("/listings");
 }));
 
@@ -96,7 +98,8 @@ router.post("/", validateListing, wrapAsync(async (req, res, next) => {
 
 router.get("/:id", wrapAsync(async (req, res) => {
     let { id } = req.params;//find id
-    const listing = await Listing.findById(id).populate("reviews");//find and store all data 
+    const listing = await Listing.findById(id).populate({path:"reviews",populate:{path:"author"},}).populate("owner");//find and store all data 
+    console.log(listing);
     res.render("listings/show.ejs", { listing });
 }));
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -104,14 +107,14 @@ router.get("/:id", wrapAsync(async (req, res) => {
 
 //--------------------------------------(UPDATE)--------------------------------------------------------------------------------------------------------------
 //Edit Route (Using GET) to get form to edit/update
-router.get("/:id/edit", wrapAsync(async (req, res) => {
+router.get("/:id/edit", isLoggedIn,isOwner, wrapAsync(async (req, res) => {
     let { id } = req.params;//find id
     const listing = await Listing.findById(id);//find and store all data 
     res.render("listings/edit.ejs", { listing });
 }));
 
 //Update Route (Using PUT) to update after form submission
-router.put("/:id", validateListing, wrapAsync(async (req, res) => {
+router.put("/:id",isLoggedIn,isOwner, validateListing, wrapAsync(async (req, res) => {
     let { id } = req.params;//find id
     await Listing.findByIdAndUpdate(id, { ...req.body.listing });
     //    res.redirect("/listings");
@@ -122,7 +125,7 @@ router.put("/:id", validateListing, wrapAsync(async (req, res) => {
 //----------------------------------(DELETE)--------------------------------------------------
 //form with button is made inside show.ejs
 
-router.delete("/:id", validateListing, wrapAsync(async (req, res) => {
+router.delete("/:id",isOwner, validateListing, isLoggedIn, wrapAsync(async (req, res) => {
     let { id } = req.params;//find id
     let deletedList = await Listing.findByIdAndDelete(id);
     //console.log(deletedList);

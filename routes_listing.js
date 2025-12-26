@@ -7,6 +7,7 @@ const ExpressError = require("../utils/ExpressError.js");
 const { listingSchema } = require("../schema.js");
 const { validateListing, validateReview, isLoggedIn, isOwner } = require("../middleware");
 const Listing = require("../models/listing.js");// here . bcz models and app.js are in same floder
+const listingController = require("../controllers/listings.js");
 //--------------------------------------------------------------------------------
 
 //index route--> to get all data -----------------------------------------------------------------------------------------------------------------------------
@@ -25,10 +26,7 @@ const Listing = require("../models/listing.js");// here . bcz models and app.js 
 //     res.render("listings/index.ejs",{allListings});
 // });
 
-router.get("/", wrapAsync(async (req, res) => {
-    const allListings = await Listing.find({});
-    res.render("listings/index.ejs", { allListings });
-}));
+router.get("/", wrapAsync(listingController.index));
 
 //---------------------------------------(CREATE) , these must be placed above READ-------------------------------------------------------------------------------------------------------
 
@@ -38,9 +36,7 @@ router.get("/", wrapAsync(async (req, res) => {
 // });
 
 //NEW Route (using GET) to get a form to create new listing
-router.get("/new", isLoggedIn, async (req, res) => {//pass middleware isLoggedIn to check if user is logged in or not
-    res.render("listings/new.ejs");
-});
+router.get("/new", isLoggedIn, listingController.renderNewForm);
 
 //CREATE route (Using POST) to create listing after submitting form of NEW route
 // app.post("/listings", async (req, res) => {
@@ -61,13 +57,7 @@ router.get("/new", isLoggedIn, async (req, res) => {//pass middleware isLoggedIn
 //     }
 // });
 
-router.post("/", validateListing, wrapAsync(async (req, res, next) => {
-    const newlist = new Listing(req.body.listing);
-    newlist.owner = req.user._id;//to assign owner name of newlist created=username
-    await newlist.save();
-    req.flash("success", "New listing created!");
-    res.redirect("/listings");
-}));
+router.post("/", isLoggedIn, validateListing, wrapAsync(listingController.createListing));
 
 // app.post("/listings", wrapAsync(async (req, res, next) => {
 //     // listingschema.validate(req.body);
@@ -96,41 +86,23 @@ router.post("/", validateListing, wrapAsync(async (req, res, next) => {
 //     res.render("listings/show.ejs",{listing});
 // });
 
-router.get("/:id", wrapAsync(async (req, res) => {
-    let { id } = req.params;//find id
-    const listing = await Listing.findById(id).populate({path:"reviews",populate:{path:"author"},}).populate("owner");//find and store all data 
-    console.log(listing);
-    res.render("listings/show.ejs", { listing });
-}));
+router.get("/:id", wrapAsync(listingController.showAllListings));
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 //--------------------------------------(UPDATE)--------------------------------------------------------------------------------------------------------------
 //Edit Route (Using GET) to get form to edit/update
-router.get("/:id/edit", isLoggedIn,isOwner, wrapAsync(async (req, res) => {
-    let { id } = req.params;//find id
-    const listing = await Listing.findById(id);//find and store all data 
-    res.render("listings/edit.ejs", { listing });
-}));
+router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(listingController.renderEditForm));
 
 //Update Route (Using PUT) to update after form submission
-router.put("/:id",isLoggedIn,isOwner, validateListing, wrapAsync(async (req, res) => {
-    let { id } = req.params;//find id
-    await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-    //    res.redirect("/listings");
-    res.redirect(`/listings/${id}`);
-}));
+router.put("/:id", isLoggedIn, isOwner, validateListing, wrapAsync(listingController.updateListing));
 
 
 //----------------------------------(DELETE)--------------------------------------------------
 //form with button is made inside show.ejs
 
-router.delete("/:id",isOwner, validateListing, isLoggedIn, wrapAsync(async (req, res) => {
-    let { id } = req.params;//find id
-    let deletedList = await Listing.findByIdAndDelete(id);
-    //console.log(deletedList);
-    res.redirect("/listings");
-}));
-
+router.delete("/:id", isLoggedIn, isOwner, wrapAsync(listingController.destroyListing));
 //-----------------------------------------------------------------------------------------------------------------
+
+
 module.exports = router;

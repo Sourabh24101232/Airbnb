@@ -17,9 +17,7 @@ const app = express();
 const mongoose = require("mongoose");
 
 //get from another folder---------------------------------------------------------------------------------
-const wrapAsync = require("./utils/wrapasync.js")
 const ExpressError = require("./utils/ExpressError.js");
-const { validateListing, validateReview } = require("./middleware");
 
 //required for express router
 const listingRouter = require("./routes/listing.js");
@@ -30,7 +28,6 @@ const userRouter=require("./routes/user.js");
 const passport=require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const User=require("./models/user");
-const {isLoggedIn}=require("./middleware");
 //--------------------------------------------------------------------------------------------------------
 
 //Method override MUST come before your routes.----------------------------
@@ -95,7 +92,7 @@ const store = MongoStore.create({
   touchAfter: 24 * 3600,
 });
 
-store.on("error",()=>{
+store.on("error",(err)=>{
     console.log("ERROR in MONGO SESSION STORE",err);
 });
 
@@ -150,13 +147,6 @@ app.get("/demouser",async(req,res)=>{
 });
 //------------------------------------------------------------------------------------------
 
-// starts the HTTP server and binds it to port 8080. 
-// After this, if you visit localhost:8080 in a browser, it will talk to my code.
-const port = process.env.PORT || 8080;
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
-
 
 //-------------------------------------------------------------------------------------------------------------
 app.use("/listings", listingRouter);
@@ -165,10 +155,12 @@ app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 //whenever path route starts from /listings, use listings obtained above by importing listing.js from routes
 
+app.get("/", (req, res) => {
+  res.redirect("/listings");
+});
 app.use("/", userRouter);
 //whenever path route starts from /user, use listings obtained above by importing listing.js from routes
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 //if none of above path get the request, all will come here
 app.use((req, res, next) => {
@@ -181,3 +173,9 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render("error.ejs", { err });
 });
 
+// starts the HTTP server and binds it to port 8080. 
+// After this, if you visit localhost:8080 in a browser, it will talk to my code.
+const port = process.env.PORT || 8080;
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});

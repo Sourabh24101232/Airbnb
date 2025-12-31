@@ -1,0 +1,62 @@
+<% layout("layouts/boilerplate") %>
+
+    <div class="row mt-3">
+        <!-- put whole form in div class=row and class=col-8 to make forms short (8 out of 12) horizontally -->
+        <div class="col-8 offset-2"> <!-- offset-2 shifts whole div right by 2 -->
+
+            <h3>Create a New List</h3>
+            <br>
+
+            <!-- "novalidate" from bootstrap disables defaults message by browser in case of form validation -->
+            <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
+                <!-- enctype="multipart/form-data" helps to send files to backend -->
+
+                <div class="mb-3"> <!-- class="mb-3" gives breathing space b/w inputs -->
+                    <label for="title" class="form-label">Title</label>
+                    <input name="listing[title]" placeholder="Your Catchy title" type="text" class="form-control"
+                        required>
+                    <div class="valid-feedback">Title Looks Good!</div>
+                    <div class="invalid-feedback">Enter Valid Title!</div>
+                    <!-- custom message when no data is filled -->
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">description</label>
+                    <textarea name="listing[description]" class="form-control" required></textarea>
+                    <div class="invalid-feedback">Please enter a short description</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Upload Listing Image</label>
+                    <input name="listing[image]"  type="file" class="form-control" required>
+                </div>
+
+                <!-- to put section of price and row in 1 row -->
+                <div class="row">
+                    <div class="mb-3 col-md-4">
+                        <!-- to divide horizontal space of 12 only on medium or greater than medium screen-->
+                        <label for="price" class="form-label">Price</label>
+                        <input name="listing[price]" placeholder="1500" type="number" class="form-control" required>
+                        <div class="invalid-feedback">Enter Valid Price</div>
+                    </div>
+
+                    <div class="mb-3 col-md-8">
+                        <label for="country" class="form-label">Country</label>
+                        <input name="listing[country]" placeholder="India" type="text" class="form-control" required>
+                        <div class="invalid-feedback">Country name should be valid!</div>
+                    </div>
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location</label>
+                    <input name="listing[location]" placeholder="Jaipur,Rajasthan" type="text" class="form-control"
+                        required>
+                    <div class="invalid-feedback">Enter Valid location</div>
+                </div>
+
+                <button type="submit" class="btn btn-dark add-btn mt-3">Add</button>
+                <br>
+                <br>
+            </form>
+        </div>
+    </div>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WanderLust</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- link css file from css folder, this css will be for all pages -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!-- to use bootstrap css stylings -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- font awesome cdn link to use icons of font awesome -->
+
+    <!-- to use google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@300,400;500;600&display=swap"
+        rel="stylesheet">
+    <!-- edit font size in above line as per need -->
+
+    <!-- to style rating like stars -->
+    <link rel="stylesheet" href="/css/rating.css">
+</head>
+
+<body>
+    <!-- this is to make a bolierplate code for all webpages of website -->
+
+    <!-- <h1>WanderLust</h1>
+    This will be displayed on all pages -->
+
+    <%- include("../includes/navbar.ejs") %>
+        <!-- add navbar to all pages -->
+
+        <!-- FLASH MESSAGES -->
+        <% if (success && success.length) { %>
+            <div class="row justify-content-center mt-3">
+                <div class="col-md-8">
+                    <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+                        <%= success[0] %>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+
+                <% if (error && error.length) { %>
+                    <div class="row justify-content-center mt-3">
+                        <div class="col-md-8">
+                            <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                                <%= error[0] %>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+
+
+                        <div class="container"><%-body %></div>
+                        <!-- Now, include  and just write body in all files  -->
+
+                        <%- include("../includes/footer.ejs") %>
+                            <!-- add footer to all pages -->
+                            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+                                integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+                                crossorigin="anonymous"></script>
+                            <!-- to link js code with bootstrap -->
+
+                            <!-- to link script.js from js folder -->
+                            <script src="/js/script.js"></script>
+</body>
+
+</html>

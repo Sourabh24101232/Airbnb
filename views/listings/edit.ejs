@@ -1,0 +1,68 @@
+<% layout("layouts/boilerplate") %>
+
+    <div class="row mt-3"> <!-- mt-3 means margin from top -->
+        <div class="col-8 offset-2">
+            <h3>Edit Your List</h3>
+            <br><br>
+
+            <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
+
+                <!-- edit an object listing with keys = title,description,image,price,location,country -->
+                <!-- change placeholder to value of each particular listing -->
+                <!-- matlab pehle dikhata tha "location" ab dikhayega "HotelSK ka location" jisko hum edit kar sakte hai -->
+
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input name="listing[title]" value="<%= listing.title %>" type="text" class="form-control" required>
+                    <div class="valid-feedback">Title Looks Good!</div>
+                    <div class="invalid-feedback">Enter Valid Title!</div>
+                    <!-- custom message when no data is filled -->
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">description</label>
+                    <textarea name="listing[description]" class="form-control"
+                        required><%= listing.description %></textarea>
+                    <div class="invalid-feedback">Please enter a short description</div>
+                </div>
+
+                <!-- image preview before updating -->
+                <div class="mb-3">
+                    <h4>Original Image</h4>
+                    <img src="<%=originalimageurl%>" alt="Listing image" class="img-fluid rounded" style="max-height: 250px;">
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Upload New Image</label>
+                    <input name="listing[image]"  type="file" class="form-control">
+                </div>
+
+                <!-- to put section of price and row in 1 row -->
+                <div class="row">
+                    <div class="mb-3 col-md-4">
+                        <!-- to divide horizontal space of 12 only on medium or greater than medium screen-->
+                        <label for="price" class="form-label">Price</label>
+                        <input name="listing[price]" value="<%= listing.price %>" type="number" class="form-control"
+                            required>
+                        <div class="invalid-feedback">Enter Valid Price</div>
+                    </div>
+
+                    <div class="mb-3 col-md-8">
+                        <label for="location" class="form-label">Location</label>
+                        <input name="listing[location]" value="<%= listing.location %>" type="text" class="form-control"
+                            required>
+                        <div class="invalid-feedback">Country name should be valid!</div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="country" class="form-label">Country</label>
+                    <input name="listing[country]" value="<%= listing.country %>" type="text" required>
+                    <div class="invalid-feedback">Enter Valid location</div>
+                </div>
+
+                <button type="submit" class="btn btn-dark edit-btn mt-3">Edit</button>
+            </form>
+        </div>
+    </div>
+

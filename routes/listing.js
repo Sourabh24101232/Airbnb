@@ -3,7 +3,7 @@ const router = express.Router();
 
 //to puload images and store in cloudinary
 const multer  = require('multer');
-const {storage}=require("../coudConfig.js");
+const {storage}=require("../cloudConfig.js");
 // const upload = multer({ dest: 'uploads/' })
 const upload = multer({storage});//ab file uploads ki jagah cloudinary(storage) mein save hoga, now we can delete uploads folder
 

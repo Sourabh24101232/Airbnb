@@ -84,6 +84,8 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo").default;//to deploy
 const flash = require("connect-flash");
 
+console.log("DB URL:", dbURL);
+
 //to deploy
 const store = MongoStore.create({
   mongoUrl: dbURL,
@@ -150,8 +152,9 @@ app.get("/demouser",async(req,res)=>{
 
 // starts the HTTP server and binds it to port 8080. 
 // After this, if you visit localhost:8080 in a browser, it will talk to my code.
-app.listen(8080, () => {
-    console.log("Server is listening to port 8080");//console.log is just a confirmation message for me in the terminal
+const port = process.env.PORT || 8080;
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
 
 
